@@ -48,6 +48,14 @@ class PackedSequence:
 
     def __iter__(self):
         return self._tensors.__iter__()
+    
+    def to(self, *args, **kwargs):
+        self._tensors = [tensor.to(*args, **kwargs) if tensor is not None else None for tensor in self._tensors]
+        return self
+    
+    def detach(self):
+        self._tensors = [tensor.detach() if tensor is not None else None for tensor in self._tensors]
+        return self
 
     def cuda(self, device=None, non_blocking=False):
         self._tensors = [
